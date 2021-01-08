@@ -1,3 +1,4 @@
+import React from 'react'
 import authors from '../data/authors.csv'
 import books from '../data/books.csv'
 import magazines from '../data/magazines.csv'
@@ -7,8 +8,6 @@ import {
   findItemsByAuthorEmail,
   sortItemsByKey
 } from './helper-methods'
-console.log(books)
-console.log(magazines)
 
 const Books = joinAuthors(books, 'book', authors)
 const Magazines = joinAuthors(magazines, 'magazine', authors)
@@ -23,6 +22,36 @@ const App = () => {
   console.log(findItemsByAuthorEmail(AllItems, 'null-lieblich@echocat.org'))
   console.log('Step 4: sort all items by title (in ascending order)')
   console.log(sortItemsByKey(AllItems, 'title', 'asc'))
+  return <>
+    <h1>Step 1: print all items but with some added data (i.e. full author info and item type)</h1>
+    <table>
+      <thead>
+        <tr>
+          <th>Type</th>
+          <th>Title</th>
+          <th>Authors</th>
+          <th>Description</th>
+          <th>ISBN</th>
+          <th>Publish Date</th>
+        </tr>
+      </thead>
+      <tbody>
+        {AllItems.map(item => {
+          return <tr>
+            <td>{item.type}</td>
+            <td>{item.title}</td>
+            <td>{item.authors.map(({ firstname, lastname }) => <div>
+              {`${lastname}, ${firstname}`}
+            </div>)}</td>
+            <td>{item.description}</td>
+            <td>{item.isbn}</td>
+            <td>{item.publishedAt || ''}</td>
+          </tr>
+        })}
+      </tbody>
+    </table>
+    
+  </>
 };
 
 export default App;
